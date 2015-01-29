@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Metaprogramming | The Blog Ben Writes]]></title>
+  <link href="http://benjagross.github.io/blog/categories/metaprogramming/atom.xml" rel="self"/>
+  <link href="http://benjagross.github.io/"/>
+  <updated>2015-01-29T16:40:19-05:00</updated>
+  <id>http://benjagross.github.io/</id>
+  <author>
+    <name><![CDATA[Ben Gross]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[About Class_eval and Instance_eval]]></title>
+    <link href="http://benjagross.github.io/blog/2015/01/29/about-class-eval-and-instance-eval/"/>
+    <updated>2015-01-29T11:40:19-05:00</updated>
+    <id>http://benjagross.github.io/blog/2015/01/29/about-class-eval-and-instance-eval</id>
+    <content type="html"><![CDATA[<p>This afternoon I took the time to reread my old blog&hellip;</p>
+
+<p>I then took less time to <code>rm -rf octopress</code> and <code>git clone git://github.com/imathis/octopress.git octopress</code> to start a new blog.</p>
+
+<p>For the first post in my new blog I will write about the Ruby methods: class_eval and instance_eval. I can think of no way more metaphorically flavorful of getting into a good headspace to write!</p>
+
+<p>These methods are meta and a bit odd so to start, in plain English, class_eval lets a programmer evaluate code within the scope of a class and instance_eval lets a programmer evaluate code on a class object.</p>
+
+<p>Here is how they look:</p>
+
+<h3>class_eval</h3>
+
+<pre><code class="ruby">class Meal
+end
+
+breakfast = Meal.new
+breakfast.eat_pancakes # NoMethodError
+
+Meal.class_eval do 
+  def eat_pancakes
+    "Mmmmm Pancakes!"
+  end
+end
+
+breakfast.eat_pancakes # "Mmmmm Pancakes!"
+</code></pre>
+
+<p>The first time we call <code>breakfast.eat_pancakes</code> we get a NoMethodError. <code>class Meal</code> is empty and this is what we expect. The second time it is called after we use class_eval to pass a block to the meal class defining the eat_pancakes method. We then get a return value of &ldquo;Mmmmm Pancakes!&rdquo;. We get this without changing the original code for the Meal class. We can use class_eval to add the an instance method to a class at any point in a program runtime!</p>
+
+<h3>instance_eval</h3>
+
+<pre><code class="ruby">class Meal
+  def eat_pancakes
+    "Mmmmm Pancakes!"
+  end
+end
+
+Meal.instance_eval do 
+  def breakfast?
+    true
+  end
+end
+
+Meal.breakfast? # true
+</code></pre>
+
+<p>In the above code <code>Meal.breakfast?</code> returns true after we use instance_eval to add the appropriate class method. This is where things get confusing. In the above example of class_eval we added the instance method <code>eat_pancakes</code> and in the example for instance_eval we added the class method <code>breakfast?</code>. So why are they not named the other way around?</p>
+
+<ul>
+<li>class_eval is a method from <a href="http://www.ruby-doc.org/core-2.2.0/Module.html">Ruby&rsquo;s Module Class</a> and thus acts on a module or class and evaluates the block it is pased in the scope of that class. Thus when we define a method in that scope with <code>def eat_pancakes</code> we create an instance method the same way we would had it been within the original class syntax.</li>
+<li>instance_eval however is a method from <a href="http://ruby-doc.org/core-2.2.0/Object.html">Ruby&rsquo;s Object Class</a> and the block we pass to it is evaluated on the class object. Then when we write <code>def breakfast?</code> in the block it is evaluated on the class object and runs as a class method rather than in the class as an instance method!</li>
+</ul>
+
+
+<p>So you may look at these methods and think, &ldquo;Cool! But who cares?&rdquo; and that&rsquo;s probably fine, I only used instance_eval once and it was to change an initialize method to give class instances a different name depending on how they were created. While I quickly refactore this away I still think it was a fun way to solve the problem.</p>
+
+<p>Moving forward will you use this method? If you are really into metaprogramming then yes, you probably will, but if not? Who cares, they fun methods to play with and can help you think about the ruby object model in a new way.</p>
+]]></content>
+  </entry>
+  
+</feed>
