@@ -9,7 +9,7 @@
   <meta name="author" content="Ben Gross">
 
   
-  <meta name="description" content="This afternoon I took the time to reread my old blog&hellip; I then took less time to rm -rf octopress and git clone git://github.com/imathis/ &hellip;">
+  <meta name="description" content="It&rsquo;s not so amazing how life always seems to keep just slightly away from writing, but not today! So after a long while, here is a post about &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -65,6 +65,150 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/03/05/about-ruby-proxy-class/">About Ruby Proxy Class</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-03-05T14:12:04-05:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>5</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>2:12 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>It&rsquo;s not so amazing how life always seems to keep just slightly away from writing, but not today! So after a long while, here is a post about Proxy Classes in Ruby.</p>
+
+<p>I came accross the topic while going through the <a href="http://rubykoans.com/">Ruby Koans</a> this morning and since I had never heard of this pattern before I thought, &ldquo;Let&rsquo;s get writing!&rdquo;</p>
+
+<h3>What is a Proxy Class?</h3>
+
+<p>Proxy Class is a code pattern in Ruby and is simply using a class to interface with something else(It is completely important to note that this is different from <a href="http://docs.oracle.com/javase/tutorial/java/concepts/interface.html">Java Interfaces</a> which I will not talk about here). In Ruby, it helps me to think of the proxy class pattern as a technique to create wrappers for other classes that can add new functionality and/or change normal functionality.</p>
+
+<h3>Why Use This Pattern?</h3>
+
+<p>If you read the above description, stood up, and shouted, &ldquo;Of Course!,&rdquo; like I did when I wrote it, then you can skip to the examples. If not, you probably want to know why you might use this pattern. You can use this pattern to add your own functionality to a class you created to give it different functions in certain circumstances, or to change a standard Ruby class, like array, without <a href="http://en.wikipedia.org/wiki/Monkey_patch">monkey patching</a> the class and creating potential problems with your code. If you are looking for examples you you don&rsquo;t need to get very obscure. <a href="https://github.com/rails/rails/tree/master/activerecord">Active Record</a> use this pattern to give us those wonderful associations!</p>
+
+<p>If you would like a more simple example however In the below code we set up the a Proxy Class for an array of names.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">NamesProxyArray</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@arr</span> <span class="o">=</span> <span class="n">arr</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kp">private</span>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">method_missing</span><span class="p">(</span><span class="nb">method</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
+</span><span class='line'>      <span class="vi">@arr</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="nb">method</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">special_array</span> <span class="o">=</span> <span class="no">NamesProxyArray</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="sx">%w[Alex Birtha Christopher Mark Thomas Sally Jessica Steve]</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">special_array</span><span class="o">.</span><span class="n">size</span> <span class="c1">#=&gt; 8</span>
+</span><span class='line'><span class="n">special_array</span><span class="o">.</span><span class="n">shuffle</span> <span class="c1">#=&gt; [&quot;Thomas&quot;, &quot;Christopher&quot;, &quot;Steve&quot;, &quot;Sally&quot;, &quot;Jessica&quot;, &quot;Alex&quot;, &quot;Birtha&quot;, &quot;Mark&quot;] </span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<p>Above, we recreate the functionality of Ruby Array by redefining method_missing. We use the <code>send</code> method to take any method unknown to the NamesProxyArray in this case <code>size</code> and <code>shuffle</code> and call them on the array object that is in this instance of Proxy Class we made. This is the cornerstone for setting up our proxy. After hijacking into method_missing, any method that we don&rsquo;t define or that is not part of the default Ruby Class Object will be called on Array instead of NamesProxyArray.</p>
+
+<p>Now that we have access to the regular Array methods we can start to add new functionality. In the below code we will redefine the shuffle method and add a new method called get_first_letter.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">NamesProxyArray</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@arr</span> <span class="o">=</span> <span class="n">arr</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">shuffle</span>
+</span><span class='line'>    <span class="vi">@arr</span><span class="o">.</span><span class="n">map</span> <span class="k">do</span> <span class="o">|</span><span class="n">item</span><span class="o">|</span>
+</span><span class='line'>      <span class="n">item</span><span class="o">.</span><span class="n">chars</span><span class="o">.</span><span class="n">shuffle</span><span class="o">.</span><span class="n">join</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">get_first_letter</span>
+</span><span class='line'>    <span class="vi">@arr</span><span class="o">.</span><span class="n">map</span> <span class="k">do</span> <span class="o">|</span><span class="n">item</span><span class="o">|</span>
+</span><span class='line'>      <span class="n">item</span><span class="o">.</span><span class="n">chars</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kp">private</span>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">method_missing</span><span class="p">(</span><span class="nb">method</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
+</span><span class='line'>      <span class="vi">@arr</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="nb">method</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">special_array</span> <span class="o">=</span> <span class="no">NamesProxyArray</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="sx">%w[Alex Birtha Christopher Mark Thomas Sally Jessica Steve]</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">special_array</span><span class="o">.</span><span class="n">size</span> <span class="c1">#=&gt; 8</span>
+</span><span class='line'><span class="n">special_array</span><span class="o">.</span><span class="n">shuffle</span> <span class="c1">#=&gt; [&quot;Axel&quot;, &quot;hiartB&quot;, &quot;iCsrtrhpoeh&quot;, &quot;Mrka&quot;, &quot;osmaTh&quot;, &quot;lylaS&quot;, &quot;eJssaci&quot;, &quot;etvSe&quot;]</span>
+</span><span class='line'><span class="n">special_array</span><span class="o">.</span><span class="n">get_first_letter</span> <span class="c1">#=&gt; [&quot;A&quot;, &quot;B&quot;, &quot;C&quot;, &quot;M&quot;, &quot;T&quot;, &quot;S&quot;, &quot;J&quot;, &quot;S&quot;]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>
+Now we have two new methods! A redefined shuffle and a new get_first_letter. By defining shuffle in NamesProxyArray <code>method_missing</code> is not longer called and the method is evaluated in our Proxy Class instance AND we don&rsquo;t have to worry about breaking <code>shuffle</code> any where else in our code. The get_first_letter works like any other instance method and <code>size</code> (and other standard array methods), as long as they are undefined in ProxyClass still get evaluated on the regualar Array class. All this happens without having to modify the class Array at all!</p>
+
+<p>Ruby&rsquo;s Proxy Class pattern is awesome to understand and can be used to really make your code your own. You can modify any of the standard ruby objects to work your way without actually changing them!</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -190,6 +334,10 @@
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/03/05/about-ruby-proxy-class/">About Ruby Proxy Class</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2015/01/29/about-class-eval-and-instance-eval/">About Class_eval and Instance_eval</a>

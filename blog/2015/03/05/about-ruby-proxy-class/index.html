@@ -1,24 +1,90 @@
-<?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[The Blog Ben Writes]]></title>
-  <link href="http://benjagross.github.io/atom.xml" rel="self"/>
-  <link href="http://benjagross.github.io/"/>
-  <updated>2015-03-07T11:51:58-05:00</updated>
-  <id>http://benjagross.github.io/</id>
-  <author>
-    <name><![CDATA[Ben Gross]]></name>
-    
-  </author>
-  <generator uri="http://octopress.org/">Octopress</generator>
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>About Ruby Proxy Class - The Blog Ben Writes</title>
+  <meta name="author" content="Ben Gross">
 
   
-  <entry>
-    <title type="html"><![CDATA[About Ruby Proxy Class]]></title>
-    <link href="http://benjagross.github.io/blog/2015/03/05/about-ruby-proxy-class/"/>
-    <updated>2015-03-05T14:12:04-05:00</updated>
-    <id>http://benjagross.github.io/blog/2015/03/05/about-ruby-proxy-class</id>
-    <content type="html"><![CDATA[<p>It&rsquo;s not so amazing how life always seems to keep just slightly away from writing, but not today! So after a long while, here is a post about Proxy Classes in Ruby.</p>
+  <meta name="description" content="It&rsquo;s not so amazing how life always seems to keep just slightly away from writing, but not today! So after a long while, here is a post about &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://benjagross.github.io/blog/2015/03/05/about-ruby-proxy-class/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="The Blog Ben Writes" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">The Blog Ben Writes</a></h1>
+  
+    <h2>about code</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="benjagross.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">About Ruby Proxy Class</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-03-05T14:12:04-05:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>5</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>2:12 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>It&rsquo;s not so amazing how life always seems to keep just slightly away from writing, but not today! So after a long while, here is a post about Proxy Classes in Ruby.</p>
 
 <p>I came accross the topic while going through the <a href="http://rubykoans.com/">Ruby Koans</a> this morning and since I had never heard of this pattern before I thought, &ldquo;Let&rsquo;s get writing!&rdquo;</p>
 
@@ -134,100 +200,118 @@
 Now we have two new methods! A redefined shuffle and a new get_first_letter. By defining shuffle in NamesProxyArray <code>method_missing</code> is not longer called and the method is evaluated in our Proxy Class instance AND we don&rsquo;t have to worry about breaking <code>shuffle</code> any where else in our code. The get_first_letter works like any other instance method and <code>size</code> (and other standard array methods), as long as they are undefined in ProxyClass still get evaluated on the regualar Array class. All this happens without having to modify the class Array at all!</p>
 
 <p>Ruby&rsquo;s Proxy Class pattern is awesome to understand and can be used to really make your code your own. You can modify any of the standard ruby objects to work your way without actually changing them!</p>
-]]></content>
-  </entry>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
   
-  <entry>
-    <title type="html"><![CDATA[About Class_eval and Instance_eval]]></title>
-    <link href="http://benjagross.github.io/blog/2015/01/29/about-class-eval-and-instance-eval/"/>
-    <updated>2015-01-29T11:40:19-05:00</updated>
-    <id>http://benjagross.github.io/blog/2015/01/29/about-class-eval-and-instance-eval</id>
-    <content type="html"><![CDATA[<p>This afternoon I took the time to reread my old blog&hellip;</p>
 
-<p>I then took less time to <code>rm -rf octopress</code> and <code>git clone git://github.com/imathis/octopress.git octopress</code> to start a new blog.</p>
+<span class="byline author vcard">Posted by <span class="fn">Ben Gross</span></span>
 
-<p>For the first post in my new blog I will write about the Ruby methods: class_eval and instance_eval. I can think of no way more metaphorically flavorful of getting into a good headspace to write!</p>
-
-<p>These methods are meta and a bit odd so to start, in plain English, class_eval lets a programmer evaluate code within the scope of a class and instance_eval lets a programmer evaluate code on a class object.</p>
-
-<p>Here is how they look:</p>
-
-<h3>class_eval</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Meal</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">breakfast</span> <span class="o">=</span> <span class="no">Meal</span><span class="o">.</span><span class="n">new</span>
-</span><span class='line'><span class="n">breakfast</span><span class="o">.</span><span class="n">eat_pancakes</span> <span class="c1"># NoMethodError</span>
-</span><span class='line'>
-</span><span class='line'><span class="no">Meal</span><span class="o">.</span><span class="n">class_eval</span> <span class="k">do</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">eat_pancakes</span>
-</span><span class='line'>    <span class="s2">&quot;Mmmmm Pancakes!&quot;</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">breakfast</span><span class="o">.</span><span class="n">eat_pancakes</span> <span class="c1"># &quot;Mmmmm Pancakes!&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
+      
 
 
-<p>The first time we call <code>breakfast.eat_pancakes</code> we get a NoMethodError. <code>class Meal</code> is empty and this is what we expect. The second time it is called after we use class_eval to pass a block to the meal class defining the eat_pancakes method. We then get a return value of &ldquo;Mmmmm Pancakes!&rdquo;. We get this without changing the original code for the Meal class. We can use class_eval to add the an instance method to a class at any point in a program runtime!</p>
-
-<h3>instance_eval</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Meal</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">eat_pancakes</span>
-</span><span class='line'>    <span class="s2">&quot;Mmmmm Pancakes!&quot;</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="no">Meal</span><span class="o">.</span><span class="n">instance_eval</span> <span class="k">do</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">breakfast?</span>
-</span><span class='line'>    <span class="kp">true</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="no">Meal</span><span class="o">.</span><span class="n">breakfast?</span> <span class="c1"># true</span>
-</span></code></pre></td></tr></table></div></figure>
 
 
-<p>In the above code <code>Meal.breakfast?</code> returns true after we use instance_eval to add the appropriate class method. This is where things get confusing. In the above example of class_eval we added the instance method <code>eat_pancakes</code> and in the example for instance_eval we added the class method <code>breakfast?</code>. So why are they not named the other way around?</p>
+<time class='entry-date' datetime='2015-03-05T14:12:04-05:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>5</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>2:12 pm</span></time>
+      
 
-<ul>
-<li>class_eval is a method from <a href="http://www.ruby-doc.org/core-2.2.0/Module.html">Ruby&rsquo;s Module Class</a> and thus acts on a module or class and evaluates the block it is pased in the scope of that class. Thus when we define a method in that scope with <code>def eat_pancakes</code> we create an instance method the same way we would had it been within the original class syntax.</li>
-<li>instance_eval however is a method from <a href="http://ruby-doc.org/core-2.2.0/Object.html">Ruby&rsquo;s Object Class</a> and the block we pass to it is evaluated on the class object. Then when we write <code>def breakfast?</code> in the block it is evaluated on the class object and runs as a class method rather than in the class as an instance method!</li>
-</ul>
-
-
-<p>So you may look at these methods and think, &ldquo;Cool! But who cares?&rdquo; and that&rsquo;s probably fine, I only used instance_eval once and it was to change an initialize method to give class instances a different name depending on how they were created. While I quickly refactore this away I still think it was a fun way to solve the problem.</p>
-
-<p>Moving forward will you use this method? If you are really into metaprogramming then yes, you probably will, but if not? Who cares, they fun methods to play with and can help you think about the ruby object model in a new way.</p>
-]]></content>
-  </entry>
+<span class="categories">
   
-</feed>
+    <a class='category' href='/blog/categories/class/'>class,</a>, <a class='category' href='/blog/categories/meta-programming/'>meta-programming,</a>, <a class='category' href='/blog/categories/object/'>object</a>, <a class='category' href='/blog/categories/ruby/'>ruby,</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://benjagross.github.io/blog/2015/03/05/about-ruby-proxy-class/" data-via="benjagross" data-counturl="http://benjagross.github.io/blog/2015/03/05/about-ruby-proxy-class/" >Tweet</a>
+  
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2015/01/29/about-class-eval-and-instance-eval/" title="Previous Post: About class_eval and instance_eval">&laquo; About class_eval and instance_eval</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/03/05/about-ruby-proxy-class/">About Ruby Proxy Class</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/01/29/about-class-eval-and-instance-eval/">About Class_eval and Instance_eval</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - Ben Gross -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
