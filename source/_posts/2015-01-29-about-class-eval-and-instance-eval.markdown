@@ -7,7 +7,7 @@ categories: "metaprogramming ruby class_eval instance_eval eval"
 ---
 This afternoon I took the time to reread my old blog...
 
-I then took less time to `rm -rf octopress` and `git clone git://github.com/imathis/octopress.git octopress ` to start a new blog. 
+I then took less time to delete the whole thing and restart it since if something is worth doing it is worth doing well.
 
 For the first post in my new blog I will write about the Ruby methods: class_eval and instance_eval. I can think of no way more metaphorically flavorful of getting into a good headspace to write!
 
