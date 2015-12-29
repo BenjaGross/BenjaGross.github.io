@@ -1,0 +1,252 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>About Using Jasmine - The Blog Ben Writes</title>
+  <meta name="author" content="Ben Gross">
+
+  
+  <meta name="description" content="I have been working on a Backbone.js project for a few days now and while it has been great I came accross one very annoying issue. After getting my &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://benjagross.github.io/blog/2015/12/19/about-using-jasmine/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="The Blog Ben Writes" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">The Blog Ben Writes</a></h1>
+  
+    <h2>about code</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="benjagross.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">About Using Jasmine</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-12-19T13:24:25-05:00'><span class='date'><span class='date-month'>Dec</span> <span class='date-day'>19</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>1:24 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>I have been working on a Backbone.js project for a few days now and while it has been great I came accross one very annoying issue. After getting my environment set up and a quick hello world out of the way I started to write a few Jasmine tests. I opened up the console and stared blankly for a few minutes and realized I didn&rsquo;t know how to run them. I had the proper source files and dependencies but just didn&rsquo;t know how to actually run my tests.</p>
+
+<p>After looking on google for a while I decided to refactor to use the <a href="https://github.com/jasmine/jasmine/releases">Jasmine Standalone release</a> which I probably should have done to begin with but I guess I had on my Ruby colored glasses.</p>
+
+<p>I download the bundle and was able to pull the necessary files into my project directory, set up an <code>index.html</code> in my spec directory but when I began to require all the relevant scripts I decided I wanted a better way. I talked to some friends and was told that I should just use the <a href="https://github.com/jasmine/jasmine-gem">Jasmine Gem</a>. Since I had only used the gem with with Rails and I didn&rsquo;t think to use a gem for a strictly JavaScript project didn&rsquo;t even bother looking at the gem (which I already had).</p>
+
+<p>Using the Jasmine gem is extremely simple, just navigate to the root of your project and type these two commands:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>jasmine init
+</span><span class='line'>jasmine examples
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If this is done properly you will get a notice saying &ldquo;Jasmine has been installed&rdquo; and instructions to run the server with the command <code>rake jasmine</code> and that you can run the automated CI tasks with PhantomJS by calling <code>rake jasmine::ci</code>.</p>
+
+<p>More specifically <code>jasmine init</code> will add the following files and directories to your project.</p>
+
+<ul>
+<li><code>spec</code>, which contains <code>spec/javascripts</code> which holds
+
+<ul>
+<li><code>helpers</code> an empty directory you will later use for helper files (<code>jasmine examples</code> will add one)</li>
+<li><code>support</code> holding <code>jasmine.yml</code> which will handle your requirements and <code>jasmine.helper.rb</code> where you can override and default configuration options like the port numbers</li>
+</ul>
+</li>
+<li><code>rakefile</code> which by default will require the jasmine rake tasks for starting the testing server and more</li>
+</ul>
+
+
+<p><code>jasmine examples</code> will add more directories and files to your project that you can use as a boilerplate for building your own tests. It will install:</p>
+
+<ul>
+<li><code>spec/helpers/jasmine_examples/spec_helper.js</code> a file you can use for setting up callbacks for your tests</li>
+<li><code>spec/jasmine_examples/PlayerSpec.js</code> an example spec file for <code>Player</code></li>
+<li><code>public</code>a directory contianing two JavaScript objects that are tested by <code>PlayerSpec.js</code></li>
+</ul>
+
+
+<p>Now, if you type <code>rake jasmine</code> and visit <a href="http://localhost:8888/">http://localhost:8888/</a> (the default port for the python server you launch with <code>rake jasmine</code>) you will see the passing tests for PlayerSpec.js.</p>
+
+<p>Now that we have some dummy tests running we can set up the requirements for dependencies in <code>jasmine.yml</code>. This file contains comments telling you where to require what and it already has everything you need to run the tests generated by <code>jasmine examples</code> however, if if you are using anything other than vanilla JavaScript like I was, you will need to manually require some dependencies. You can use wildecards and regex to require specific groups of files in directories (e.g. <code>js/**/*.js</code> will require in all javascript files in all child directories directly nested under a <code>js</code> directory) however this may not load files in the order that you need so it will still be necessary to require certain files manually. For example, if you are using backbone <code>lib/underscore.js</code> will need to be required before <code>lib/backbone.js</code> manually even if you have <code>lib/*.js</code> the <code>src_files</code> section of <code>jasmine.yml</code>.</p>
+
+<p>If you are having trouble figuring out what might be missing you can manually check by running the server (<code>rake jasmine</code>) and opening the console to see what isn&rsquo;t being loaded properly.</p>
+
+<p>This is not the most difficult thing in the world, and frankly, if you are using anything like yeoman or are adept at bower you will probably not need this, but if you want to bring some jasmine tests into a small application without much overhead I found this to be a great solution.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Ben Gross</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2015-12-19T13:24:25-05:00'><span class='date'><span class='date-month'>Dec</span> <span class='date-day'>19</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>1:24 pm</span></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/gems/'>gems</a>, <a class='category' href='/blog/categories/tdd/'>tdd,</a>, <a class='category' href='/blog/categories/testing/'>testing,</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://benjagross.github.io/blog/2015/12/19/about-using-jasmine/" data-via="benjagross" data-counturl="http://benjagross.github.io/blog/2015/12/19/about-using-jasmine/" >Tweet</a>
+  
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2015/03/05/about-ruby-proxy-class/" title="Previous Post: About Ruby Proxy Class">&laquo; About Ruby Proxy Class</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/12/19/about-using-jasmine/">About Using Jasmine</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/03/05/about-ruby-proxy-class/">About Ruby Proxy Class</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/01/29/about-class-eval-and-instance-eval/">About Class_eval and Instance_eval</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - Ben Gross -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

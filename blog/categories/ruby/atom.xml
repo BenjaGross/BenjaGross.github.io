@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Ruby, | The Blog Ben Writes]]></title>
   <link href="http://benjagross.github.io/blog/categories/ruby/atom.xml" rel="self"/>
   <link href="http://benjagross.github.io/"/>
-  <updated>2015-03-07T11:51:58-05:00</updated>
+  <updated>2015-12-29T12:48:35-05:00</updated>
   <id>http://benjagross.github.io/</id>
   <author>
     <name><![CDATA[Ben Gross]]></name>
@@ -18,7 +18,7 @@
     <link href="http://benjagross.github.io/blog/2015/03/05/about-ruby-proxy-class/"/>
     <updated>2015-03-05T14:12:04-05:00</updated>
     <id>http://benjagross.github.io/blog/2015/03/05/about-ruby-proxy-class</id>
-    <content type="html"><![CDATA[<p>It&rsquo;s not so amazing how life always seems to keep just slightly away from writing, but not today! So after a long while, here is a post about Proxy Classes in Ruby.</p>
+    <content type="html"><![CDATA[<p>It&rsquo;s not so amazing how life always seems to keep just slightly away from writing, but not recently! So here is a post about Proxy Classes in Ruby.</p>
 
 <p>I came accross the topic while going through the <a href="http://rubykoans.com/">Ruby Koans</a> this morning and since I had never heard of this pattern before I thought, &ldquo;Let&rsquo;s get writing!&rdquo;</p>
 
@@ -28,7 +28,7 @@
 
 <h3>Why Use This Pattern?</h3>
 
-<p>If you read the above description, stood up, and shouted, &ldquo;Of Course!,&rdquo; like I did when I wrote it, then you can skip to the examples. If not, you probably want to know why you might use this pattern. You can use this pattern to add your own functionality to a class you created to give it different functions in certain circumstances, or to change a standard Ruby class, like array, without <a href="http://en.wikipedia.org/wiki/Monkey_patch">monkey patching</a> the class and creating potential problems with your code. If you are looking for examples you you don&rsquo;t need to get very obscure. <a href="https://github.com/rails/rails/tree/master/activerecord">Active Record</a> use this pattern to give us those wonderful associations!</p>
+<p>If you read the above description, and thought, &ldquo;Sure&rdquo; then you can just skip to the examples. If not, you probably want to know why you might do this. You can use this pattern to add your own functionality to a class you created to give it different functions in certain circumstances or more likely to change a standard Ruby class, like array, without <a href="http://en.wikipedia.org/wiki/Monkey_patch">monkey patching</a> the class and creating potential problems with your code. If you are looking for examples you you don&rsquo;t need to get very obscure. <a href="https://github.com/rails/rails/tree/master/activerecord">Active Record</a> use this pattern to design their associations!</p>
 
 <p>If you would like a more simple example however In the below code we set up the a Proxy Class for an array of names.</p>
 
@@ -83,9 +83,9 @@ special_array.shuffle #=&gt; ["Axel", "hiartB", "iCsrtrhpoeh", "Mrka", "osmaTh",
 special_array.get_first_letter #=&gt; ["A", "B", "C", "M", "T", "S", "J", "S"]
 </code></pre>
 
-<p>Now we have two new methods! A redefined shuffle and a new get_first_letter. By defining shuffle in NamesProxyArray <code>method_missing</code> is not longer called and the method is evaluated in our Proxy Class instance AND we don&rsquo;t have to worry about breaking <code>shuffle</code> any where else in our code. The get_first_letter works like any other instance method and <code>size</code> (and other standard array methods), as long as they are undefined in ProxyClass still get evaluated on the regualar Array class. All this happens without having to modify the class Array at all!</p>
+<p>Now we have two new methods! A redefined shuffle and a new <code>get_first_letter</code>. By defining shuffle in NamesProxyArray <code>method_missing</code> is not longer called and the method is evaluated in our Proxy Class instance and we don&rsquo;t have to worry about breaking <code>shuffle</code> any where else in our code. <code>get_first_letter</code> works like any other instance method and any standard array method like <code>size</code>, as long as they are undefined in ProxyClass still get evaluated on the regualar Array class. All this happens without having to modify the class Array at all!</p>
 
-<p>Ruby&rsquo;s Proxy Class pattern is awesome to understand and can be used to really make your code your own. You can modify any of the standard ruby objects to work your way without actually changing them!</p>
+<p>Ruby&rsquo;s Proxy Class pattern can be used to really make your code your own. You can modify any of the standard ruby objects to work your way without actually changing them! Additionally it helped me to get more comfortable using patterns in my day to day code.</p>
 ]]></content>
   </entry>
   
