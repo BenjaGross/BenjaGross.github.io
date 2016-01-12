@@ -11,4 +11,4 @@ Dungeons and Dragons characters progress from level to level so I decided that I
 
 d3.js is a Javascript library for building graphs and charts, check out what I was able to accomplish below.
 
-<script> hello</script>
+<script src='http://d3js.org/d3.v2.min.js'></script>
