@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Tdd, | The Blog Ben Writes]]></title>
   <link href="http://benjagross.github.io/blog/categories/tdd/atom.xml" rel="self"/>
   <link href="http://benjagross.github.io/"/>
-  <updated>2015-12-29T12:48:35-05:00</updated>
+  <updated>2016-02-22T11:05:41-05:00</updated>
   <id>http://benjagross.github.io/</id>
   <author>
     <name><![CDATA[Ben Gross]]></name>
@@ -18,13 +18,13 @@
     <link href="http://benjagross.github.io/blog/2015/12/19/about-using-jasmine/"/>
     <updated>2015-12-19T13:24:25-05:00</updated>
     <id>http://benjagross.github.io/blog/2015/12/19/about-using-jasmine</id>
-    <content type="html"><![CDATA[<p>I have been working on a Backbone.js project for a few days now and while it has been great I came accross one very annoying issue. After getting my environment set up and a quick hello world out of the way I started to write a few Jasmine tests. I opened up the console and stared blankly for a few minutes and realized I didn&rsquo;t know how to run them. I had the proper source files and dependencies but just didn&rsquo;t know how to actually run my tests.</p>
+    <content type="html"><![CDATA[<p>I have been working on a Backbone.js project for a few days now and while it has been great I came accross one very annoying issue. After getting my environment set up, a quick hello world out of the way, and some Jasmine tests written I opened up my terminal and stared blankly for a few minutes before it hit methat I didn&rsquo;t know how to run them Jasmine tests. I had the proper source files and dependencies but just didn&rsquo;t know how to actually run my tests.</p>
 
-<p>After looking on google for a while I decided to refactor to use the <a href="https://github.com/jasmine/jasmine/releases">Jasmine Standalone release</a> which I probably should have done to begin with but I guess I had on my Ruby colored glasses.</p>
+<p>After looking on google for a while I decided to refactor my test suite use the <a href="https://github.com/jasmine/jasmine/releases">Jasmine Standalone release</a> which I would have done originally had I not expected the the testing suite to just work, like it does in rails.</p>
 
-<p>I download the bundle and was able to pull the necessary files into my project directory, set up an <code>index.html</code> in my spec directory but when I began to require all the relevant scripts I decided I wanted a better way. I talked to some friends and was told that I should just use the <a href="https://github.com/jasmine/jasmine-gem">Jasmine Gem</a>. Since I had only used the gem with with Rails and I didn&rsquo;t think to use a gem for a strictly JavaScript project didn&rsquo;t even bother looking at the gem (which I already had).</p>
+<p>I download the standalone bundle and was able to pull the necessary source files into my project&rsquo;s directory, set up an <code>index.html</code> in my spec directory, and began to require all the relevant scripts. At that point I decided I wanted a better way. I talked to some friends and was told that I should just use the <a href="https://github.com/jasmine/jasmine-gem">Jasmine Gem</a>. Since I had only used this gem with with Rails and gems-in-general with Ruby I didn&rsquo;t think to use it for a strictly JavaScript project.</p>
 
-<p>Using the Jasmine gem is extremely simple, just navigate to the root of your project and type these two commands:</p>
+<p>Using the Jasmine gem is extremely simple if you have a Ruby environment set up on  your computer. Once you install the gem just navigate to the root of your project and type these two commands:</p>
 
 <pre><code class="bash">jasmine init
 jasmine examples
@@ -35,14 +35,15 @@ jasmine examples
 <p>More specifically <code>jasmine init</code> will add the following files and directories to your project.</p>
 
 <ul>
-<li><code>spec</code>, which contains <code>spec/javascripts</code> which holds
+<li><code>spec</code> will contain all of your spec files and spec specific requirements</li>
+<li><code>spec/javascripts</code> which holds
 
 <ul>
-<li><code>helpers</code> an empty directory you will later use for helper files (<code>jasmine examples</code> will add one)</li>
+<li><code>helpers</code> an empty directory you will later use for helper scripts (<code>jasmine examples</code> will add one)</li>
 <li><code>support</code> holding <code>jasmine.yml</code> which will handle your requirements and <code>jasmine.helper.rb</code> where you can override and default configuration options like the port numbers</li>
 </ul>
 </li>
-<li><code>rakefile</code> which by default will require the jasmine rake tasks for starting the testing server and more</li>
+<li><code>rakefile</code> which by default will require the jasmine rake tasks for starting the testing server and more but can be used to write more tasks</li>
 </ul>
 
 
@@ -55,13 +56,13 @@ jasmine examples
 </ul>
 
 
-<p>Now, if you type <code>rake jasmine</code> and visit <a href="http://localhost:8888/">http://localhost:8888/</a> (the default port for the python server you launch with <code>rake jasmine</code>) you will see the passing tests for PlayerSpec.js.</p>
+<p>Now, if you type <code>rake jasmine</code> and visit <a href="http://localhost:8888/">http://localhost:8888/</a> (the default port for the python server you launch with <code>rake jasmine</code>) you will see the passing tests for <code>PlayerSpec.js</code>.</p>
 
-<p>Now that we have some dummy tests running we can set up the requirements for dependencies in <code>jasmine.yml</code>. This file contains comments telling you where to require what and it already has everything you need to run the tests generated by <code>jasmine examples</code> however, if if you are using anything other than vanilla JavaScript like I was, you will need to manually require some dependencies. You can use wildecards and regex to require specific groups of files in directories (e.g. <code>js/**/*.js</code> will require in all javascript files in all child directories directly nested under a <code>js</code> directory) however this may not load files in the order that you need so it will still be necessary to require certain files manually. For example, if you are using backbone <code>lib/underscore.js</code> will need to be required before <code>lib/backbone.js</code> manually even if you have <code>lib/*.js</code> the <code>src_files</code> section of <code>jasmine.yml</code>.</p>
+<p>Now that we have the dummy tests running we can set up the requirements for dependencies in <code>jasmine.yml</code>. This file contains comments telling you where to require what and it already has everything you need to run the tests generated by <code>jasmine examples</code> and any tests that you write in the spec directory the gem builds however, if if you are using anything other than vanilla JavaScript like I was, you will need to manually require some files. You can use wildecards and regex to require specific groups of files in directories (e.g. <code>js/**/*.js</code> will require in all javascript files in all child directories directly nested under the <code>js</code> directory) however this may not load scripts in the order that you need so it will still be necessary to require certain files manually. For example, if you are using backbone <code>lib/underscore.js</code> will need to be required before <code>lib/backbone.js</code> manually even if you have <code>lib/*.js</code> the <code>src_files</code> section of <code>jasmine.yml</code>.</p>
 
-<p>If you are having trouble figuring out what might be missing you can manually check by running the server (<code>rake jasmine</code>) and opening the console to see what isn&rsquo;t being loaded properly.</p>
+<p>If some of your tests aren&rsquo;t working and you think that some files aren&rsquo;t being required properly you can manually check the page by running the server (<code>rake jasmine</code>) and opening the console to see what isn&rsquo;t being loaded properly. If there are errors in your files they will show up in the console. Since it is JavaScript it runs in the browser and all of the files you need for testing should be there.</p>
 
-<p>This is not the most difficult thing in the world, and frankly, if you are using anything like yeoman or are adept at bower you will probably not need this, but if you want to bring some jasmine tests into a small application without much overhead I found this to be a great solution.</p>
+<p>This is not the most difficult thing in the world, and frankly, if you are using anything like yeoman or are adept at bower you will probably not need this, but if you want to bring some jasmine tests into a small application without much overhead I found this gem to be a great solution.</p>
 ]]></content>
   </entry>
   
