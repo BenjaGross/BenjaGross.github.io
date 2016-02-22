@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "About Trie-ing"
+title: "About Trie-ing (part 1)"
 date: 2016-02-19 10:57:20 -0500
 comments: true
 categories: 
