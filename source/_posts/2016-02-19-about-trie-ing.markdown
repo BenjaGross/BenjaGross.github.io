@@ -12,30 +12,31 @@ After working out my first solution involving lots of nested loops I decided to 
 
 <div style="text-align:center"><img src ="../images/trie_bst_comp.png" /></div>
 
-Although tries use a tree like structure they are different from a normal trie for several reasons.
+Although tries use a tree like structure they are different from a normal binary search trees for several reasons.
 
-+ Each descendent of a node all share a common prefix like "i", "in", and "inn" in the above example, because of this tries are often called "Prefix Trees"
++ Each descendent of a node all share a common prefix like "i" for  "in" and "inn" in the above example. Because of this tries are often called "Prefix Trees"
 
-+ No node in the trie stores any key associated with that particular node, instead the location in the tree defines what key with which each node is associated
++ No node in the trie stores any key associated with that particular node, instead the location of the node in the tree defines what key with which each node is associated.
 
 So now that we know that a trie is sufficently different from a regular binary search tree 
+
 ####Benefits
 * Looking up data in a trie is faster than looking up data in an imperfect hash table ( O(m) with m being the length of the search string vs. O(N) ) 
 	* An imperfect hash table is one with key collisions, instances in which the hash function maps different keys to the same position in a hash	
+	* Take a look at [here](https://en.wikipedia.org/wiki/Hash_table#Collision_resolution) to see why this is a problem in hashe's and how they get around it
 *  A trie will not contain any key colisions 
-*  Trie Buckets are ony necessary if there are multiple values associated with the same key
-	*  Take a look at [here](https://en.wikipedia.org/wiki/Hash_table#Collision_resolution) to see why this is a problem in hashe's and how they get around it
-* The hash function can stay the same as more keys are added to a trie
+*  Trie Buckets are only necessary if there are multiple values associated with the same key
+* Adding and deleting items from a trie is simple
 
 ####Drawbacks
 * Trie lookups can take a longer time if the trie is stored on a hard disk and not in virtual memory
 * Some tries require more space than equivelent hash tables
-* Certain keys like foating point numbers do not provide much meaning and must be used with the [Bitwise Trie implementation](https://en.wikipedia.org/wiki/Trie#Bitwise_tries)
+* Certain keys, like foating point numbers, do not provide much meaning and must be used with the [Bitwise Trie implementation](https://en.wikipedia.org/wiki/Trie#Bitwise_tries)
 
 ###So Why a Trie?
 Tries are great for matching full and parital string patterns and can be used for predictive text, autocomplete, and even spell check. The matching algorithm is so good in a trie because the strings are organized by prefix, so a large amount of potentially searchable data can be safely ignored with just the first letter of a search term. 
 
-Given a trie matching function `trie.match("tea")` on the below trie represented differently than above only branches with the parent prefix "t" will be searched safely eliminating anything without that prefix.
+Given a trie matching function `trie.match("tea")` on the below trie(same as above but represented differently) only branches with the parent prefix "t" will be searched, which safely eliminates anything without that prefix.
 
 ```
 {:root=>
