@@ -33,5 +33,12 @@ So now that we know that a trie is sufficently different from a regular binary s
 * Certain keys like foating point numbers do not provide much meaning and must be used with the [Bitwise Trie implementation](https://en.wikipedia.org/wiki/Trie#Bitwise_tries)
 
 ###So Why a Trie?
-Tries are great for matching full and parital string patterns and can be used for predictive text, autocomplete, and even spell check. The matching algorithm is so good in a trie because the strings are organized by prefix, so a large amount of potentially searchable data can be safely ignored with just the first letter of a search term. Given a trie matching function `example_trie.match("tea")` on the below trie
-![Trie](../images/trie.png)
+Tries are great for matching full and parital string patterns and can be used for predictive text, autocomplete, and even spell check. The matching algorithm is so good in a trie because the strings are organized by prefix, so a large amount of potentially searchable data can be safely ignored with just the first letter of a search term. 
+
+Given a trie matching function `example_trie.match("tea")` on the below trie only branches with the parent prefix "t" will be searched safely eliminating anything without that prefix
+<div style="text-align:center"><img src ="../images/trie.png" /></div>
+
+###Implementaions
+In my next post I will build a simple trie implementation in Ruby.
+
+Alternatively, if you cannot wait you can use the[Trie Gem](https://github.com/tyler/trie), one of the many [Node packages](https://www.npmjs.com/browse/keyword/trie), or whatever library you find best.
