@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>About Trie-ing - The Blog Ben Writes</title>
+  <title>About Trie-ing (Part 1) - The Blog Ben Writes</title>
   <meta name="author" content="Ben Gross">
 
   
@@ -68,7 +68,7 @@
   
   <header>
     
-      <h1 class="entry-title">About Trie-ing</h1>
+      <h1 class="entry-title">About Trie-ing (Part 1)</h1>
     
     
       <p class="meta">
@@ -91,11 +91,11 @@
 <div style="text-align:center"><img src ="../images/trie_bst_comp.png" /></div>
 
 
-<p>Although tries use a tree like structure they are different from a normal trie for several reasons.</p>
+<p>Although tries use a tree like structure they are different from a normal binary search trees for several reasons.</p>
 
 <ul>
-<li><p>Each descendent of a node all share a common prefix like &ldquo;i&rdquo;, &ldquo;in&rdquo;, and &ldquo;inn&rdquo; in the above example, because of this tries are often called &ldquo;Prefix Trees&rdquo;</p></li>
-<li><p>No node in the trie stores any key associated with that particular node, instead the location in the tree defines what key with which each node is associated</p></li>
+<li><p>Each descendent of a node all share a common prefix like &ldquo;i&rdquo; for  &ldquo;in&rdquo; and &ldquo;inn&rdquo; in the above example. Because of this tries are often called &ldquo;Prefix Trees&rdquo;</p></li>
+<li><p>No node in the trie stores any key associated with that particular node, instead the location of the node in the tree defines what key with which each node is associated.</p></li>
 </ul>
 
 
@@ -108,16 +108,12 @@
 
 <ul>
 <li>An imperfect hash table is one with key collisions, instances in which the hash function maps different keys to the same position in a hash</li>
-</ul>
-</li>
-<li>A trie will not contain any key colisions</li>
-<li>Trie Buckets are ony necessary if there are multiple values associated with the same key
-
-<ul>
 <li>Take a look at <a href="https://en.wikipedia.org/wiki/Hash_table#Collision_resolution">here</a> to see why this is a problem in hashe&rsquo;s and how they get around it</li>
 </ul>
 </li>
-<li>The hash function can stay the same as more keys are added to a trie</li>
+<li>A trie will not contain any key colisions</li>
+<li>Trie Buckets are only necessary if there are multiple values associated with the same key</li>
+<li>Adding and deleting items from a trie is simple</li>
 </ul>
 
 
@@ -126,14 +122,37 @@
 <ul>
 <li>Trie lookups can take a longer time if the trie is stored on a hard disk and not in virtual memory</li>
 <li>Some tries require more space than equivelent hash tables</li>
-<li>Certain keys like foating point numbers do not provide much meaning and must be used with the <a href="https://en.wikipedia.org/wiki/Trie#Bitwise_tries">Bitwise Trie implementation</a></li>
+<li>Certain keys, like foating point numbers, do not provide much meaning and must be used with the <a href="https://en.wikipedia.org/wiki/Trie#Bitwise_tries">Bitwise Trie implementation</a></li>
 </ul>
 
 
 <h3>So Why a Trie?</h3>
 
-<p>Tries are great for matching full and parital string patterns and can be used for predictive text, autocomplete, and even spell check. The matching algorithm is so good in a trie because the strings are organized by prefix, so a large amount of potentially searchable data can be safely ignored with just the first letter of a search term. Given a trie matching function <code>example_trie.match("tea")</code> on the below trie only branches with the parent prefix &ldquo;t&rdquo; will be a
-<img src="../images/trie.png"></p>
+<p>Tries are great for matching full and parital string patterns and can be used for predictive text, autocomplete, and even spell check. The matching algorithm is so good in a trie because the strings are organized by prefix, so a large amount of potentially searchable data can be safely ignored with just the first letter of a search term.</p>
+
+<p>Given a trie matching function <code>trie.match("tea")</code> on the below trie(same as above but represented differently) only branches with the parent prefix &ldquo;t&rdquo; will be searched, which safely eliminates anything without that prefix.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>{:root=&gt;
+</span><span class='line'>  {"t"=&gt;
+</span><span class='line'>    {true=&gt;{},
+</span><span class='line'>     "o"=&gt;{true=&gt;{}},
+</span><span class='line'>     "e"=&gt;{true=&gt;{}, "a"=&gt;{true=&gt;{}}, "d"=&gt;{true=&gt;{}}, "n"=&gt;{true=&gt;{}}}},
+</span><span class='line'>   "A"=&gt;{true=&gt;{}},
+</span><span class='line'>   "i"=&gt;{true=&gt;{}, "n"=&gt;{true=&gt;{}, "n"=&gt;{true=&gt;{}}}}}}</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Implementaions</h3>
+
+<p>In my next post I will build a simple trie implementation in Ruby.</p>
+
+<p>Alternatively, if you cannot wait you can use the <a href="https://github.com/tyler/trie">Trie Gem</a>, one of the many <a href="https://www.npmjs.com/browse/keyword/trie">Node packages</a>, or whatever library you find best.</p>
 </div>
 
 
@@ -184,7 +203,7 @@
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2016/02/19/about-trie-ing/">About Trie-ing</a>
+        <a href="/blog/2016/02/19/about-trie-ing/">About Trie-ing (Part 1)</a>
       </li>
     
       <li class="post">
