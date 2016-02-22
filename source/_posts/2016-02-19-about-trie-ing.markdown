@@ -6,13 +6,32 @@ comments: true
 categories: 
 ---
 
-I recently had the chance to work on a problem involving pattern matching. One of my favorite aspects of programming is solving puzzles and I quite enjoyed working on this problem. 
+I recently had the chance to work on a problem involving string pattern matching. One of my favorite aspects of programming is solving these sorts of algorithmic puzzles so I quite enjoyed working on this problem.
 
-After finding my first solution for matching strings with a nested loop I figured that there must be a better matching algorithm. After researching a bit I came accross the [Trie](https://en.wikipedia.org/wiki/Trie) data structure. A Trie can look very similar to a Binary Search Tree as seen below (Trie: left Binary Tree: rigth).
+After working out my first solution involving lots of nested loops I decided to research a bit I came accross the [Trie data structure](https://en.wikipedia.org/wiki/Trie). A trie can look very similar to a regular binary search tree as seen below (_Trie:_ left _Binary Tree:_ right) however there a few key differences.
 
-![Trie](../images/trie.png) ![Binary Tree](../images/binary_tree.png)
+<div style="text-align:center"><img src ="../images/trie_bst_comp.png" /></div>
 
-Although Tries use a tree like structure they are different from a normal trie for several reasons.
+Although tries use a tree like structure they are different from a normal trie for several reasons.
 
-+ Each descendent of a node all share a common prefix like "i", "in", and "inn" in the above example. I would also guess that this is why they are allso called "Prefix Trees"
-+ No node in the tree stores any key associated with that particular node, instead the location in the tree defines what key each node is associated with 
++ Each descendent of a node all share a common prefix like "i", "in", and "inn" in the above example, because of this tries are often called "Prefix Trees"
+
++ No node in the trie stores any key associated with that particular node, instead the location in the tree defines what key with which each node is associated
+
+So now that we know that a trie is sufficently different from a regular binary search tree 
+####Benefits
+* Looking up data in a trie is faster than looking up data in an imperfect hash table ( O(m) with m being the length of the search string vs. O(N) ) 
+	* An imperfect hash table is one with key collisions, instances in which the hash function maps different keys to the same position in a hash	
+*  A trie will not contain any key colisions 
+*  Trie Buckets are ony necessary if there are multiple values associated with the same key
+	*  Take a look at [here](https://en.wikipedia.org/wiki/Hash_table#Collision_resolution) to see why this is a problem in hashe's and how they get around it
+* The hash function can stay the same as more keys are added to a trie
+
+####Drawbacks
+* Trie lookups can take a longer time if the trie is stored on a hard disk and not in virtual memory
+* Some tries require more space than equivelent hash tables
+* Certain keys like foating point numbers do not provide much meaning and must be used with the [Bitwise Trie implementation](https://en.wikipedia.org/wiki/Trie#Bitwise_tries)
+
+###So Why a Trie?
+Tries are great for matching full and parital string patterns and can be used for predictive text, autocomplete, and even spell check. The matching algorithm is so good in a trie because the strings are organized by prefix, so a large amount of potentially searchable data can be safely ignored with just the first letter of a search term. Given a trie matching function `example_trie.match("tea")` on the below trie
+![Trie](../images/trie.png)
