@@ -10,7 +10,7 @@ I recently had the chance to work on a problem involving string pattern matching
 
 After working out my first solution involving lots of nested loops I decided to research a bit I came accross the [Trie data structure](https://en.wikipedia.org/wiki/Trie). A trie can look very similar to a regular binary search tree as seen below (_Trie:_ left _Binary Tree:_ right) however there a few key differences.
 
-<div style="text-align:center"><img src ="../images/trie_bst_comp.png" /></div>
+<div style="text-align:center"><img src ="https://raw.githubusercontent.com/BenjaGross/BenjaGross.github.io/master/images/trie_bst_comp.png"></div>
 
 Although tries use a tree like structure they are different from a normal binary search trees for several reasons.
 
