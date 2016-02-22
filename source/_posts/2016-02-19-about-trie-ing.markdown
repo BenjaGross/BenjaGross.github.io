@@ -38,7 +38,7 @@ Tries are great for matching full and parital string patterns and can be used fo
 
 Given a trie matching function `trie.match("tea")` on the below trie(same as above but represented differently) only branches with the parent prefix "t" will be searched, which safely eliminates anything without that prefix.
 
-```
+```ruby
 {:root=>
   {"t"=>
     {true=>{},
