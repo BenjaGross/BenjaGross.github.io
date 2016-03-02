@@ -3,14 +3,14 @@ layout: post
 title: "About Trie-ing (part 2)"
 date: 2016-02-22 14:36:01 -0500
 comments: true
-categories: 
+categories: data structures, trie, tree
 ---
 ##Implementing a Trie in Ruby
 
 In my last post I talked about benefits, reasons, and potential negatives about using a trie, a data type that is great to use for matching string patterns. For this post I will talk about how to implement a trie in Ruby.
 
-#### Setting Up
-The first thing I want to do when I'm going to build my trie is set up a `Trie` class that will initialize with a hash containing the type of nested hash structure I want my trie to have. Since this is the actual data structure of my trie I will call this instance variable `tree` 
+#### The Groundwork
+The first thing we want to do to build this trie is set up a `Trie` class that can initialize with a specialized nested hash. Since this will the actual data structure of the trie we can call it `tree`
 
 ```ruby
 class Trie
@@ -24,9 +24,9 @@ class Trie
 end
 ```
 
-The above code will initialze new instances of `Trie` with a default hash called `tree`. We build our nested hash above so that when we try to access a key in our hash, if the key is present we will get the value of that key, but if the key is not present then a new key-value pair will be added to the hash. When a new pair is added, the key will be the value we tried to access and the value will be an empty hash. This would normally only work on the first level of our hash, but since we want it to work no matter how deep our hashes get nested we can call [default_proc](http://ruby-doc.org/core-1.9.3/Hash.html#method-i-default_proc) (which returns any block passed to `Hash.new` for a specific instance of `Hash`) as a proc on each new hash we create on access so that each new hash created on access is created with the same functionality.
+When we call `Trie.new` the above code will initialze a new instance of `Trie` with an instance variable `tree`. We build our nested hash specifically so that when we try to access a key in it, if the key is present we will get the value of that key, but if the key is not present then a new key-value pair will be added to the hash. When a new pair is added, the key will be the value we tried to access and the value will be an empty hash. This would normally only work on the first level of our hash, but since we want to build empty hashes this way no matter how deep our nesting goes we can call [default_proc](http://ruby-doc.org/core-1.9.3/Hash.html#method-i-default_proc) (which returns any block passed to `Hash.new` for a specific instance of `Hash`) as a proc on `Hash.new` in the block we first provided to `Hash.new` so that each new hash created on access is built with the same functionality.
 
-Now, when we add characters to our custom nested hash in a specific way we will get a trie-like structure with each key pointing to a value that is a hash of the next possible characters. Below is an example for the strings "cat" and "car".  
+Now, when we add characters to our custom nested hash in a specific way we will get a trie structure with each key pointing to a value that is a hash of the next character in the string. Below is an example for the strings "cat" and "car".  
 
 ```ruby
 tree = Hash.new{ |h,k| h[k]=Hash.new(&h.default_proc) }
@@ -43,7 +43,7 @@ tree                  #=> {"c"=>{"a"=>{"t"=>{}, "r"=>{}}}}
 
 #### Inserting Strings
 
-Since we now have a nested hash functioning like we want the next step is to build a method that can add a string to our `tree`. I'll call this method `#insert` and it must take a string like `"cat"` and call `tree["c"]["a"]["t"]` just like above. 
+Since we now have a nested hash functioning like we want the next step is to build a method that can add a string to our `tree`. I'll call this method `#insert` and it must take a string like `"cat"` and access each section of the string independently (`tree["c"]["a"]["t"]`) just like above. 
 
 ```ruby
 def insert(word)
@@ -54,9 +54,9 @@ def insert(word)
 end
 ```
 
-The first thing we do after isolating the characters in the argument string is to set up a variable `pointer`. `pointer` starts off set to the current state of `self.tree` (starting with `{}`). Then in the next line we loop through all but the last character in our characters array. For each character we set our pointer to the return value when we try to access that character of our pointer. If that character is in our `tree` in that position, the pointer will move to the the value of that key and if that character is not present at that level of the tree then pointer will be moved to the empty array that is created and we can move on to the next value. 
+The first thing we do after isolating the characters in the argument string is to set up a variable `pointer`. `pointer` is set to the current state of `self.tree` (starting with `{}`). Then in the next line we loop through all but the last character in our characters array. For each character we set our pointer to the return value of that key. If that character is in our `tree` in that position, the pointer will move to the the value of that key and if that character is not present at that level of the tree then an empty hash will be created as the value and pointer will be moved to that hash, in which the next character of the string will be nested. 
 
-After all but the last characters are added we add the last character followed by a bool `true`. We will later use this `true` to signify that this is the end of a word in our `trie`
+After all but the last characters are added we add the last character followed by the key `true`. We will later use this `true` to check that we have reached the end of a word in our `trie`.
 
 #### Finding Matches
 
@@ -74,7 +74,7 @@ end
 
 `match` works similarly `insert` but in reverse. First we split the argument into characters (like in `insert`), then we set a variable called `pointer` to the current state of our tree (also like in `insert`), and then we loop through all the characters setting `pointer` to the return value of calling `fetch` on `pointer` for each character. We also `rescue nil` for this line and the next so that we will not get errors in instances where characters are not found in `tree`.
 
-We use `fetch` here so we can set a default return of `nil` instead of getting an error like we would had the key had not been in the hash, or creating a new empty hash which would have happened if we used the `tree["c"]` syntax and there was no key. After the loop terminates `pionter` is now pointing to `tree.fetch(characters.last, nil)` so we call `fetch(true, nil)` on the last character to make sure that the word ends at that point in the trie. If it does we get `{}` and if not we get `nil`. We then compare our result to `{}` and return the proper `true`/`false` value. 
+We use `fetch` here in order to set a default return of `nil` when we try to fetch an invalid key instead of getting an error, or creating a new empty hash, which would have happened had we used the `tree["c"]` syntax with a non-present key. After the loop terminates `pointer` points to `tree.fetch(characters.last, nil)` so we call `fetch(true, nil)` on the last character to make sure that the word ends at that point in the trie. If it does we get `{}` and if not we get `nil`. We then compare our result to `{}` and return the proper `true`/`false` value. 
 
 ####Next Steps
 After building this simple Trie implemenation in Ruby I want to end by listing a few next steps for this code.
