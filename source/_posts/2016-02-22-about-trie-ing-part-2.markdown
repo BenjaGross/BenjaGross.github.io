@@ -15,24 +15,26 @@ class Trie
    attr_accessor :tree
 
    def initialize 
-      self.tree = Hash.new{|h,k| h[k]=Hash.new(&h.default_proc) }
+      self.tree = Hash.new{ |h,k| h[k]=Hash.new(&h.default_proc) }
    end
   #...
 end
 ```
 
-The above code will initialze new instances of `Trie` with a default hash called `tree`. The line of code that we use above to build our nested hash can be a little confusing so see this explination:
+The above code will initialze new instances of `Trie` with a default hash called `tree`. We build our nested hash above so that when we try to access a key in our hash, if the key is present we will get the value of that key, but if the key is not present then a new key-value pair will be added to the hash. When a new pair is added, the key will be the value we tried to access and the value will be an empty hash. This would normally only work on the first level of our hash, but since we want it to work no matter how deep our hashes get nested we can call [#default_proc](http://ruby-doc.org/core-1.9.3/Hash.html#method-i-default_proc) (which returns any block passed to `Hash.new` for a specific instance of `Hash`) as a proc on each new hash we create on access so that we keep getting new hashes all the way down. 
 
-`Hash.new{|h,k| h[k]=Hash.new(&h.default_proc) }` will create a hash that initializes a new hash as a value in place when we try to access any uninitialized keys in our `tree`. This gives us a new level of hash in our tree structure instead of returning `nil` like it usually would. The most confusing part of this syntax for me is the `&h.default_proc` that we pass as a parameter to `Hash.new`. What this does is pass the default block parameter for our hash to any new hash created when we try to access uninitialized keys in our `tree` essentially calling `Hash.new{|h,k| h[k]=Hash.new}` for every hash that is generated on access in the `tree`. 
-
-The way this works is important for building the tree like strucutre in our trie and will be used extensively when adding strings to our trie. It works like below:
+Now, when we add characters to our custom nested hash in a specific way we will get a trie-like structure with each key pointing to a value that is a hash of the next possible characters. Below is an example for the strings "cat" and "car".  
 
 ```ruby
-tree = Hash.new{|h,k| h[k]=Hash.new(&h.default_proc) }
-tree[:a] = "ABBA" #=>"ABBA"
-tree[:a]          #=> "ABBA"
-tree[:b]          #=> {}
-tree              #=> {:a=>"ABBA", :b=>{}} 
-tree[:b][:b1]     #=> {}
-tree              #=> {:a=>"ABBA", :b=>{:b1=>{}}} 
+tree = Hash.new{ |h,k| h[k]=Hash.new(&h.default_proc) }
+
+tree["c"]             #=> {}
+tree                  #=> {"c"=>{}}
+tree["c"]["a"]        #=> {} 
+tree                  #=> {"c"=>{"a"=>{}}}
+tree["c"]["a"]["t"]   #=> {}
+tree                  #=> {"c"=>{"a"=>{"t"=>{}}}} 
+tree["c"]["a"]["r"]   #=> {}
+tree                  #=> {"c"=>{"a"=>{"t"=>{}, "r"=>{}}}} 
 ```
+Since we now have a nested hash functioning like we want the next step is to build a method that can add a string to our `Trie`. I'll call this method `#insert` and it must take a string like `"cat"` and call `tree["c"]["a"]["t"]` just like above. 
