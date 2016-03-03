@@ -7,7 +7,7 @@ categories: data structures, trie, tree
 ---
 ##Implementing a Trie in Ruby
 
-In my last post I talked about benefits, reasons, and potential negatives about using a trie, a data type that is great to use for matching string patterns. For this post I will talk about how to implement a trie in Ruby.
+In my [last post](http://benjagross.github.io/blog/2016/02/19/about-trie-ing/) I talked about benefits, reasons, and potential pitfalls of using tries. For a quick refresher, a trie, often called a prefix-tree is a  a data type that is great to use for matching string patterns. Check out the [wikipedia article](https://en.wikipedia.org/wiki/Trie) for more info. For this post I will talk about how to implement a trie in Ruby.
 
 #### The Groundwork
 The first thing we want to do to build this trie is set up a `Trie` class that can initialize with a specialized nested hash. Since this will the actual data structure of the trie we can call it `tree`
@@ -77,10 +77,9 @@ end
 We use `fetch` here in order to set a default return of `nil` when we try to fetch an invalid key instead of getting an error, or creating a new empty hash, which would have happened had we used the `tree["c"]` syntax with a non-present key. After the loop terminates `pointer` points to `tree.fetch(characters.last, nil)` so we call `fetch(true, nil)` on the last character to make sure that the word ends at that point in the trie. If it does we get `{}` and if not we get `nil`. We then compare our result to `{}` and return the proper `true`/`false` value. 
 
 ####Next Steps
-After building this simple Trie implemenation in Ruby I want to end by listing a few next steps for this code.
+After building a simple Trie in Ruby I want to end by listing a few next steps for this code.
 
 * Partial match support - Partial match support would be a very useful tool for a trie. A method like `partial_match(substring)` that could return all words in the trie containing the provided substring would be useful for finding similarity instead of indenticlal matches
 * Wildcard Support - A method that could take a string containing designated wildcard characters and return true or false for matches would be useful for finding pattern segments
 * Initialize with strings - Creating a trie that could initialize with an array of strings would make adding strings and could be accomplished with an `add_multiple_strings(array)` method that leveradges the `*` operator or just takes an array argument. 
-* Toggle options - Toggling case sensitivity
 * Javascript - Implementing a trie in Javascript would be very useful and could be used as a look up for custom predictive text in searches and many other features. 
