@@ -9,7 +9,7 @@
   <meta name="author" content="Ben Gross">
 
   
-  <meta name="description" content="I recently had the chance to work on a problem involving string pattern matching. One of my favorite aspects of programming is solving these sorts of &hellip;">
+  <meta name="description" content="Implementing a Trie in Ruby In my last post I talked about benefits, reasons, and potential pitfalls of using tries. For a quick refresher, a trie, &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -65,6 +65,149 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2016/02/22/about-trie-ing-part-2/">About Trie-ing (Part 2)</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-02-22T14:36:01-05:00'><span class='date'><span class='date-month'>Feb</span> <span class='date-day'>22</span><span class='date-suffix'>nd</span>, <span class='date-year'>2016</span></span> <span class='time'>2:36 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>Implementing a Trie in Ruby</h2>
+
+<p>In my <a href="http://benjagross.github.io/blog/2016/02/19/about-trie-ing/">last post</a> I talked about benefits, reasons, and potential pitfalls of using tries. For a quick refresher, a trie, often called a prefix-tree is a  a data type that is great to use for matching string patterns. Check out the <a href="https://en.wikipedia.org/wiki/Trie">wikipedia article</a> for more info. For this post I will talk about how to implement a trie in Ruby.</p>
+
+<h4>The Groundwork</h4>
+
+<p>The first thing we want to do to build this trie is set up a <code>Trie</code> class that can initialize with a specialized nested hash. Since this will the actual data structure of the trie we can call it <code>tree</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Trie</span>
+</span><span class='line'>
+</span><span class='line'>   <span class="kp">attr_accessor</span> <span class="ss">:tree</span>
+</span><span class='line'>
+</span><span class='line'>   <span class="k">def</span> <span class="nf">initialize</span>
+</span><span class='line'>      <span class="nb">self</span><span class="o">.</span><span class="n">tree</span> <span class="o">=</span> <span class="no">Hash</span><span class="o">.</span><span class="n">new</span><span class="p">{</span> <span class="o">|</span><span class="n">h</span><span class="p">,</span><span class="n">k</span><span class="o">|</span> <span class="n">h</span><span class="o">[</span><span class="n">k</span><span class="o">]=</span><span class="no">Hash</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="o">&amp;</span><span class="n">h</span><span class="o">.</span><span class="n">default_proc</span><span class="p">)</span> <span class="p">}</span>
+</span><span class='line'>   <span class="k">end</span>
+</span><span class='line'>  <span class="c1">#...</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>When we call <code>Trie.new</code> the above code will initialze a new instance of <code>Trie</code> with an instance variable <code>tree</code>. We build our nested hash specifically so that when we try to access a key in it, if the key is present we will get the value of that key, but if the key is not present then a new key-value pair will be added to the hash. When a new pair is added, the key will be the value we tried to access and the value will be an empty hash. This would normally only work on the first level of our hash, but since we want to build empty hashes this way no matter how deep our nesting goes we can call <a href="http://ruby-doc.org/core-1.9.3/Hash.html#method-i-default_proc">default_proc</a> (which returns any block passed to <code>Hash.new</code> for a specific instance of <code>Hash</code>) as a proc on <code>Hash.new</code> in the block we first provided to <code>Hash.new</code> so that each new hash created on access is built with the same functionality.</p>
+
+<p>Now, when we add characters to our custom nested hash in a specific way we will get a trie structure with each key pointing to a value that is a hash of the next character in the string. Below is an example for the strings &ldquo;cat&rdquo; and &ldquo;car&rdquo;.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">tree</span> <span class="o">=</span> <span class="no">Hash</span><span class="o">.</span><span class="n">new</span><span class="p">{</span> <span class="o">|</span><span class="n">h</span><span class="p">,</span><span class="n">k</span><span class="o">|</span> <span class="n">h</span><span class="o">[</span><span class="n">k</span><span class="o">]=</span><span class="no">Hash</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="o">&amp;</span><span class="n">h</span><span class="o">.</span><span class="n">default_proc</span><span class="p">)</span> <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">tree</span><span class="o">[</span><span class="s2">&quot;c&quot;</span><span class="o">]</span>             <span class="c1">#=&gt; {}</span>
+</span><span class='line'><span class="n">tree</span>                  <span class="c1">#=&gt; {&quot;c&quot;=&gt;{}}</span>
+</span><span class='line'><span class="n">tree</span><span class="o">[</span><span class="s2">&quot;c&quot;</span><span class="o">][</span><span class="s2">&quot;a&quot;</span><span class="o">]</span>        <span class="c1">#=&gt; {} </span>
+</span><span class='line'><span class="n">tree</span>                  <span class="c1">#=&gt; {&quot;c&quot;=&gt;{&quot;a&quot;=&gt;{}}}</span>
+</span><span class='line'><span class="n">tree</span><span class="o">[</span><span class="s2">&quot;c&quot;</span><span class="o">][</span><span class="s2">&quot;a&quot;</span><span class="o">][</span><span class="s2">&quot;t&quot;</span><span class="o">]</span>   <span class="c1">#=&gt; {}</span>
+</span><span class='line'><span class="n">tree</span>                  <span class="c1">#=&gt; {&quot;c&quot;=&gt;{&quot;a&quot;=&gt;{&quot;t&quot;=&gt;{}}}} </span>
+</span><span class='line'><span class="n">tree</span><span class="o">[</span><span class="s2">&quot;c&quot;</span><span class="o">][</span><span class="s2">&quot;a&quot;</span><span class="o">][</span><span class="s2">&quot;r&quot;</span><span class="o">]</span>   <span class="c1">#=&gt; {}</span>
+</span><span class='line'><span class="n">tree</span>                  <span class="c1">#=&gt; {&quot;c&quot;=&gt;{&quot;a&quot;=&gt;{&quot;t&quot;=&gt;{}, &quot;r&quot;=&gt;{}}}} </span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>Inserting Strings</h4>
+
+<p>Since we now have a nested hash functioning like we want the next step is to build a method that can add a string to our <code>tree</code>. I&rsquo;ll call this method <code>#insert</code> and it must take a string like <code>"cat"</code> and access each section of the string independently (<code>tree["c"]["a"]["t"]</code>) just like above.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">characters</span> <span class="o">=</span> <span class="n">word</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">pointer</span> <span class="o">=</span> <span class="nb">self</span><span class="o">.</span><span class="n">tree</span>
+</span><span class='line'>  <span class="n">characters</span><span class="o">[</span><span class="mi">0</span><span class="o">.</span><span class="n">.</span><span class="o">-</span><span class="mi">2</span><span class="o">].</span><span class="n">each</span><span class="p">{</span> <span class="o">|</span><span class="n">char</span><span class="o">|</span> <span class="n">pointer</span> <span class="o">=</span> <span class="n">pointer</span><span class="o">[</span><span class="n">char</span><span class="o">]</span> <span class="p">}</span>
+</span><span class='line'>  <span class="n">pointer</span> <span class="o">=</span> <span class="n">pointer</span><span class="o">[</span><span class="n">characters</span><span class="o">.</span><span class="n">last</span><span class="o">][</span><span class="kp">true</span><span class="o">]</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The first thing we do after isolating the characters in the argument string is to set up a variable <code>pointer</code>. <code>pointer</code> is set to the current state of <code>self.tree</code> (starting with <code>{}</code>). Then in the next line we loop through all but the last character in our characters array. For each character we set our pointer to the return value of that key. If that character is in our <code>tree</code> in that position, the pointer will move to the the value of that key and if that character is not present at that level of the tree then an empty hash will be created as the value and pointer will be moved to that hash, in which the next character of the string will be nested.</p>
+
+<p>After all but the last characters are added we add the last character followed by the key <code>true</code>. We will later use this <code>true</code> to check that we have reached the end of a word in our <code>trie</code>.</p>
+
+<h4>Finding Matches</h4>
+
+<p>Once we add all the words to <code>trie</code> we need check what words have been added so we can build a method called <code>match</code> which will take a string and return <code>true</code> or <code>false</code> depending on weather the word is in our trie.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">match</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">characters</span> <span class="o">=</span> <span class="n">word</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">pointer</span> <span class="o">=</span> <span class="nb">self</span><span class="o">.</span><span class="n">tree</span>
+</span><span class='line'>  <span class="n">characters</span><span class="o">.</span><span class="n">each</span> <span class="p">{</span> <span class="o">|</span><span class="n">char</span><span class="o">|</span> <span class="n">pointer</span> <span class="o">=</span> <span class="n">pointer</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="n">char</span><span class="p">,</span> <span class="kp">nil</span><span class="p">)</span> <span class="k">rescue</span> <span class="kp">nil</span> <span class="p">}</span>
+</span><span class='line'>  <span class="n">result</span> <span class="o">=</span> <span class="n">pointer</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="kp">true</span><span class="p">,</span> <span class="kp">nil</span><span class="p">)</span> <span class="k">rescue</span> <span class="kp">nil</span>
+</span><span class='line'>  <span class="n">result</span> <span class="o">==</span> <span class="p">{}</span> <span class="p">?</span> <span class="kp">true</span> <span class="p">:</span> <span class="kp">false</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>match</code> works similarly <code>insert</code> but in reverse. First we split the argument into characters (like in <code>insert</code>), then we set a variable called <code>pointer</code> to the current state of our tree (also like in <code>insert</code>), and then we loop through all the characters setting <code>pointer</code> to the return value of calling <code>fetch</code> on <code>pointer</code> for each character. We also <code>rescue nil</code> for this line and the next so that we will not get errors in instances where characters are not found in <code>tree</code>.</p>
+
+<p>We use <code>fetch</code> here in order to set a default return of <code>nil</code> when we try to fetch an invalid key instead of getting an error, or creating a new empty hash, which would have happened had we used the <code>tree["c"]</code> syntax with a non-present key. After the loop terminates <code>pointer</code> points to <code>tree.fetch(characters.last, nil)</code> so we call <code>fetch(true, nil)</code> on the last character to make sure that the word ends at that point in the trie. If it does we get <code>{}</code> and if not we get <code>nil</code>. We then compare our result to <code>{}</code> and return the proper <code>true</code>/<code>false</code> value.</p>
+
+<h4>Next Steps</h4>
+
+<p>After building a simple Trie in Ruby I want to end by listing a few next steps for this code.</p>
+
+<ul>
+<li>Partial match support - Partial match support would be a very useful tool for a trie. A method like <code>partial_match(substring)</code> that could return all words in the trie containing the provided substring would be useful for finding similarity instead of indenticlal matches</li>
+<li>Wildcard Support - A method that could take a string containing designated wildcard characters and return true or false for matches would be useful for finding pattern segments</li>
+<li>Initialize with strings - Creating a trie that could initialize with an array of strings would make adding strings and could be accomplished with an <code>add_multiple_strings(array)</code> method that leveradges the <code>*</code> operator or just takes an array argument.</li>
+<li>Javascript - Implementing a trie in Javascript would be very useful and could be used as a look up for custom predictive text in searches and many other features.</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -135,20 +278,21 @@
 
 <p>Given a trie matching function <code>trie.match("tea")</code> on the below trie(same as above but represented differently) only branches with the parent prefix &ldquo;t&rdquo; will be searched, which safely eliminates anything without that prefix.</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
 <span class='line-number'>6</span>
 <span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>{:root=&gt;
-</span><span class='line'>  {"t"=&gt;
-</span><span class='line'>    {true=&gt;{},
-</span><span class='line'>     "o"=&gt;{true=&gt;{}},
-</span><span class='line'>     "e"=&gt;{true=&gt;{}, "a"=&gt;{true=&gt;{}}, "d"=&gt;{true=&gt;{}}, "n"=&gt;{true=&gt;{}}}},
-</span><span class='line'>   "A"=&gt;{true=&gt;{}},
-</span><span class='line'>   "i"=&gt;{true=&gt;{}, "n"=&gt;{true=&gt;{}, "n"=&gt;{true=&gt;{}}}}}}</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="p">{</span><span class="ss">:root</span><span class="o">=&gt;</span>
+</span><span class='line'>  <span class="p">{</span><span class="s2">&quot;t&quot;</span><span class="o">=&gt;</span>
+</span><span class='line'>    <span class="p">{</span><span class="kp">true</span><span class="o">=&gt;</span><span class="p">{},</span>
+</span><span class='line'>     <span class="s2">&quot;o&quot;</span><span class="o">=&gt;</span><span class="p">{</span><span class="kp">true</span><span class="o">=&gt;</span><span class="p">{}},</span>
+</span><span class='line'>     <span class="s2">&quot;e&quot;</span><span class="o">=&gt;</span><span class="p">{</span><span class="kp">true</span><span class="o">=&gt;</span><span class="p">{},</span> <span class="s2">&quot;a&quot;</span><span class="o">=&gt;</span><span class="p">{</span><span class="kp">true</span><span class="o">=&gt;</span><span class="p">{}},</span> <span class="s2">&quot;d&quot;</span><span class="o">=&gt;</span><span class="p">{</span><span class="kp">true</span><span class="o">=&gt;</span><span class="p">{}},</span> <span class="s2">&quot;n&quot;</span><span class="o">=&gt;</span><span class="p">{</span><span class="kp">true</span><span class="o">=&gt;</span><span class="p">{}}}},</span>
+</span><span class='line'>   <span class="s2">&quot;A&quot;</span><span class="o">=&gt;</span><span class="p">{</span><span class="kp">true</span><span class="o">=&gt;</span><span class="p">{}},</span>
+</span><span class='line'>   <span class="s2">&quot;i&quot;</span><span class="o">=&gt;</span><span class="p">{</span><span class="kp">true</span><span class="o">=&gt;</span><span class="p">{},</span> <span class="s2">&quot;n&quot;</span><span class="o">=&gt;</span><span class="p">{</span><span class="kp">true</span><span class="o">=&gt;</span><span class="p">{},</span> <span class="s2">&quot;n&quot;</span><span class="o">=&gt;</span><span class="p">{</span><span class="kp">true</span><span class="o">=&gt;</span><span class="p">{}}}}}}</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <h3>Implementaions</h3>
@@ -507,6 +651,10 @@ Now we have two new methods! A redefined shuffle and a new <code>get_first_lette
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2016/02/22/about-trie-ing-part-2/">About Trie-ing (Part 2)</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2016/02/19/about-trie-ing/">About Trie-ing (Part 1)</a>

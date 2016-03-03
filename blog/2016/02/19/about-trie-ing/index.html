@@ -132,20 +132,21 @@
 
 <p>Given a trie matching function <code>trie.match("tea")</code> on the below trie(same as above but represented differently) only branches with the parent prefix &ldquo;t&rdquo; will be searched, which safely eliminates anything without that prefix.</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
 <span class='line-number'>6</span>
 <span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>{:root=&gt;
-</span><span class='line'>  {"t"=&gt;
-</span><span class='line'>    {true=&gt;{},
-</span><span class='line'>     "o"=&gt;{true=&gt;{}},
-</span><span class='line'>     "e"=&gt;{true=&gt;{}, "a"=&gt;{true=&gt;{}}, "d"=&gt;{true=&gt;{}}, "n"=&gt;{true=&gt;{}}}},
-</span><span class='line'>   "A"=&gt;{true=&gt;{}},
-</span><span class='line'>   "i"=&gt;{true=&gt;{}, "n"=&gt;{true=&gt;{}, "n"=&gt;{true=&gt;{}}}}}}</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="p">{</span><span class="ss">:root</span><span class="o">=&gt;</span>
+</span><span class='line'>  <span class="p">{</span><span class="s2">&quot;t&quot;</span><span class="o">=&gt;</span>
+</span><span class='line'>    <span class="p">{</span><span class="kp">true</span><span class="o">=&gt;</span><span class="p">{},</span>
+</span><span class='line'>     <span class="s2">&quot;o&quot;</span><span class="o">=&gt;</span><span class="p">{</span><span class="kp">true</span><span class="o">=&gt;</span><span class="p">{}},</span>
+</span><span class='line'>     <span class="s2">&quot;e&quot;</span><span class="o">=&gt;</span><span class="p">{</span><span class="kp">true</span><span class="o">=&gt;</span><span class="p">{},</span> <span class="s2">&quot;a&quot;</span><span class="o">=&gt;</span><span class="p">{</span><span class="kp">true</span><span class="o">=&gt;</span><span class="p">{}},</span> <span class="s2">&quot;d&quot;</span><span class="o">=&gt;</span><span class="p">{</span><span class="kp">true</span><span class="o">=&gt;</span><span class="p">{}},</span> <span class="s2">&quot;n&quot;</span><span class="o">=&gt;</span><span class="p">{</span><span class="kp">true</span><span class="o">=&gt;</span><span class="p">{}}}},</span>
+</span><span class='line'>   <span class="s2">&quot;A&quot;</span><span class="o">=&gt;</span><span class="p">{</span><span class="kp">true</span><span class="o">=&gt;</span><span class="p">{}},</span>
+</span><span class='line'>   <span class="s2">&quot;i&quot;</span><span class="o">=&gt;</span><span class="p">{</span><span class="kp">true</span><span class="o">=&gt;</span><span class="p">{},</span> <span class="s2">&quot;n&quot;</span><span class="o">=&gt;</span><span class="p">{</span><span class="kp">true</span><span class="o">=&gt;</span><span class="p">{},</span> <span class="s2">&quot;n&quot;</span><span class="o">=&gt;</span><span class="p">{</span><span class="kp">true</span><span class="o">=&gt;</span><span class="p">{}}}}}}</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <h3>Implementaions</h3>
@@ -190,6 +191,8 @@
         <a class="basic-alignment left" href="/blog/2015/12/19/about-using-jasmine/" title="Previous Post: About Using Jasmine">&laquo; About Using Jasmine</a>
       
       
+        <a class="basic-alignment right" href="/blog/2016/02/22/about-trie-ing-part-2/" title="Next Post: About Trie-ing (part 2)">About Trie-ing (part 2) &raquo;</a>
+      
     </p>
   </footer>
 </article>
@@ -201,6 +204,10 @@
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2016/02/22/about-trie-ing-part-2/">About Trie-ing (Part 2)</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2016/02/19/about-trie-ing/">About Trie-ing (Part 1)</a>
